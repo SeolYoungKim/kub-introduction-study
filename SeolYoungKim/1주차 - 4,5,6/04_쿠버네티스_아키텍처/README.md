@@ -174,3 +174,69 @@
 ---
 
 ## 3) 오브젝트와 컨트롤러
+> 쿠버네티스는 크게 Object와 이를 관리하는 Controller로 나뉨 
+> - 사용자는 템플릿 등을 이용해서 쿠버네티스에 자원의 "바라는 상태"를 정의 
+> - Controller는 바라는 상태와 현재 상태가 일치하도록 Object들을 생성 및 삭제 
+> - Object에는 Pod, Service, Volume, Namespace 등이 있음 
+> - Controller에는 ReplicaSet, Deployment, StatefulSet, DemonSet, Job 등이 있음 
+
+
+### 네임스페이스
+- 쿠버네티스 클러스터 하나를 여러 개의 논리적인 단위로 나누어서 사용하는 것 
+- 네임스페이스를 이용하면, 쿠버네티스 클러스터 하나를 여러 개의 팀이나 사용자가 함께 공유할 수 있음 
+- 기본 네임 스페이스 
+  - default : 기본 네임스페이스. 별도의 네임 스페이스를 지정하지 않을 경우, 항상 해당 네임스페이스에 저장됨 
+  - kube-system : 쿠버네티스 시스템에서 관리하는 네임스페이스. 쿠버네티스 관리용 파드나 설정이 존재함 
+  - kube-public : 클러스터 안 모든 사용자가 읽을 수 있는 네임스페이스. 보통 클러스터 사용량 정보를 관리함  
+  - kube-node-lease : 각 노드의 임대(Lease) Object들을 관리 
+- 이외 
+  - docker : 도커에서 만든 네임스페이스 
+
+
+- 기본 네임스페이스 변경 
+```bash
+# 현재 컨텍스트 정보 확인 
+kubectl config current-context
+
+# 컨텍스트의 정보 확인
+kubectl config get-context {컨텍스트 이름}
+
+# 컨텍스트의 네임 스페이스를 다른 네임스페이스로 변경 
+kubectl config set-context {컨텍스트 이름} --namespace={변경하고자 하는 네임스페이스}  
+
+# 네임스페이스 확인 
+kubectl config view | grep namespace
+
+# 전체 네임스페이스 확인 
+kubectl get pods --all-namespaces
+```
+
+
+### 템플릿 
+- 쿠버네티스 클러스터의 Object나 Controller가 어떤 상태여야 하는지를 적용할 때 YAML 형식의 템플릿을 사용 
+  - ![img_4.png](img_4.png)
+  - `---`는 구분자 
+
+
+- 쿠버네티스 기본 템플릿 형식
+  - `apiVersion`: 사용하려는 쿠버네티스 API 버전 
+    - `kubectl api-versions` 명령으로 현재 클러스터에서 사용 가능한 API 버전 확인 가능 
+  - `kind` : 어떤 종류의 오브젝트 혹은 컨트롤러에 대한 작업인지를 명시
+    - Pod라고 설정할 경우, 파드에 관한 템플릿임 
+    - Pod, Deployment, Ingress 등 다양한 오브젝트나 컨트롤러 설정 가능 
+  - `metadata` : 메타데이터 설정. 해당 Object의 이름이나 레이블을 설정함
+  - `spec` : 파드가 어떤 컨테이너를 갖고 실행하며, 실행할 때 어떻게 동작해야 할지를 명시함  
+```yaml
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+spec:
+```
+
+- `kubectl explain`
+  - 어떤 필드가 있고, 어떤 역할을 하는지 살펴볼 수 있는 명령 
+  - ex: `kubectl explain pods` → 파드 템플릿에서 사용하는 하위 필드로 무엇이 있는지 출력 
+
+
+
