@@ -35,16 +35,16 @@
 apiVersion: v1
 kind: Service
 metadata: 
-	name: my-service
+  name: my-service
 spec:
-	type: ClusterIP # Default => ClusterIP
-	clusterIP: 10.0.10.10 # 클러스터 IP 직접 설정 (안하면 임의값)
-	selector:
-		app: MyApp
-	ports:
-	- protocol: TCP
-		port: 80
-		targetPort: 9376
+  type: ClusterIP # Default => ClusterIP
+  clusterIP: 10.0.10.10 # 클러스터 IP 직접 설정 (안하면 임의값)
+  selector:
+    app: MyApp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9376
 ```
 
 - 디플로이먼트로 생성하는 서비스에 연결할 파드 실행
@@ -61,15 +61,15 @@ pod/nginx-for-service created
 apiVersion: v1
 kind: Service
 metadata: 
-	name: ckulusterip-service
+  name: ckulusterip-service
 spec:
-	type: ClusterIP
-	selector:
-		app: nginx-for-svc # nginx-for-svc 파드 선택
-	ports:
-	- protocol: TCP
-		port: 80
-		targetPort: 80
+  type: ClusterIP
+  selector:
+    app: nginx-for-svc # nginx-for-svc 파드 선택
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
 ```
 
 ```bash
