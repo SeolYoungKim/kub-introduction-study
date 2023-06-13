@@ -4,7 +4,7 @@
 
 ## 1) 노드 셀렉터(nodeSelector)
 - `.spec` 필드에 설정할 수 있는 옵션
-- 노드의 레이블에 설정된 값으로 노드를 선택 
+- 노[..](..)드의 레이블에 설정된 값으로 노드를 선택 
   - node에 key=value 쌍을 추가 레이블링 → Pod 설정 파일에 `.spec.nodeSelector.key=value` 추가해서 특정 노드를 지정하여 사용 
 
 ---
